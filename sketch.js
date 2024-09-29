@@ -1,24 +1,25 @@
 class Mole {
   constructor() {
-    this.x = width/2;
+    this.x = random(690);
     this.y = 50;
   }
 
   show() {
 
+    noStroke();
     ellipse(this.x, this.y, 6);
     fill(255);
-    stroke(255);
+    
   }
   
   step() {
     
     // Third step function
     let xstep = random(-1, 1);
-    let ystep = random(-1, 1);
+    let ystep = random(0, 0.5);
 
-    this.x -= xstep;
-    this.y -= ystep;
+    this.x += xstep;
+    this.y += ystep;
   }
 }
 
@@ -44,6 +45,7 @@ function setup() {
   // Ground
   fill("#1B0000");
   rect(0, 50, 1000,500);
+  noStroke();
 
   // create a walker
   mole = new Mole();
