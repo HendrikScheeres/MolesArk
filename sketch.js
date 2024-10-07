@@ -2,6 +2,8 @@ class Mole {
   constructor() {
     this.x = random(windowWidth);
     this.y = 48;
+    this.nested = false;
+    this.active = true;
   }
 
   show() {
@@ -11,13 +13,15 @@ class Mole {
   }
   
   step() {
+    if (!this.active){
+      return;
+    }
 
     // if it reaches the bottom stop
-    if (this.y > (windowHeight - 100)) {
-      
+    if (this.y > (windowHeight * 0.9)) {
       return;
+    };
 
-    };  
     // Third step function
     let xstep = random(-1, 1);
     let ystep = random(0, 0.5);
@@ -27,18 +31,29 @@ class Mole {
   }
 
   nest() {
-    let xstep = 0;
-    // 50% to go left or right
-    if (random() < 0.5) {
-      xstep = -0.1;
-    } else {
-      xstep = 0.1;
-    };
 
-    for (let i = 0; i < 50; i++){
-      this.x += xstep;
+    // if the mole is nested return
+    if (this.nested) {
+      return;
     }
 
+    let step = 0;
+    // randomly nest to the left or to the right
+    if (random() >= 0.5) {
+      step = -1;
+    } else {
+      step = 1;
+    }
+
+    // build a home
+    for (let i = 0; i < 80; i++){
+      this.x += step;
+      this.show();
+    }
+
+    // set nested to true and active to false
+    this.nested = true;
+    this.active = false;
   }
 }
 
@@ -49,6 +64,7 @@ let mole;
 function setup() {
  
   createCanvas(windowWidth, windowHeight);
+  
   // the first mole 
   // fill(0, 0, 0);
   // ellipse(80, 80, 40);
@@ -71,13 +87,13 @@ function setup() {
 }
 
 function draw() {
-
+  
   // Mouse Mole
   mole.show();
   mole.step();
 
-  if (mole.y > windowHeight/2){
+  // Nesting behaviour
+  if (mole.y > windowHeight * 0.7) {
     mole.nest();
-    
-  }
+  };
 }
