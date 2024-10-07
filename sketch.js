@@ -1,5 +1,7 @@
 class Mole {
   constructor() {
+    this.tx = 0;
+    this.ty = 10000;
     this.x = random(windowWidth);
     this.y = 48;
     this.nested = false;
@@ -22,16 +24,17 @@ class Mole {
       return;
     };
 
-    // Third step function
-    let xstep = random(-1, 1);
-    let ystep = random(0, 0.5);
+    let xstep = map(noise(this.tx), 0, 1, -1, 1);
+    let ystep = map(noise(this.ty), 0, 1, 0, 1);
 
     this.x += xstep;
     this.y += ystep;
+
+    this.tx +=0.01;
+    this.ty +=0.01;
   }
 
   nest() {
-
     // if the mole is nested return
     if (this.nested) {
       return;
@@ -64,7 +67,7 @@ let mole;
 function setup() {
  
   createCanvas(windowWidth, windowHeight);
-  
+
   // the first mole 
   // fill(0, 0, 0);
   // ellipse(80, 80, 40);
