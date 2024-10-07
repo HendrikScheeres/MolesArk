@@ -1,15 +1,18 @@
+let TIME = 0.03; //how quickly you walk through the perlin array
+
 class Mole {
   constructor() {
-    this.tx = 0;
-    this.ty = 10000;
+    this.tx = round(random(-1000, 0));
+    this.ty = round(random(0, 1000));
     this.x = random(windowWidth);
     this.y = 48;
     this.nested = false;
     this.active = true;
+    this.size = 6;
   }
 
   show() {
-    ellipse(this.x, this.y, 6);
+    ellipse(this.x, this.y, this.size);
     noStroke();
     fill(255);
   }
@@ -30,8 +33,8 @@ class Mole {
     this.x += xstep;
     this.y += ystep;
 
-    this.tx +=0.01;
-    this.ty +=0.01;
+    this.tx +=TIME;
+    this.ty +=TIME;
   }
 
   nest() {
@@ -42,17 +45,23 @@ class Mole {
 
     let step = 0;
     // randomly nest to the left or to the right
-    if (random() >= 0.5) {
-      step = -1;
-    } else {
+    if (random() >= 0.5){
       step = 1;
+    } else {
+      step = -1;
     }
 
+    this.size = 20;
+
     // build a home
-    for (let i = 0; i < 80; i++){
+
+    // build a random burrow
+    for (let i = 0; i < 8; i++){
       this.x += step;
       this.show();
     }
+
+    this.size = 6;
 
     // set nested to true and active to false
     this.nested = true;
@@ -62,6 +71,7 @@ class Mole {
 
 
 let mole;
+let mole2;
 
 
 function setup() {
@@ -87,6 +97,7 @@ function setup() {
 
   // create a walker
   mole = new Mole();
+  mole2 = new Mole();
 }
 
 function draw() {
@@ -94,9 +105,16 @@ function draw() {
   // Mouse Mole
   mole.show();
   mole.step();
+  mole2.show();
+  mole2.step();
 
   // Nesting behaviour
   if (mole.y > windowHeight * 0.7) {
     mole.nest();
+  };
+
+  // Nesting behaviour
+  if (mole2.y > windowHeight * 0.7) {
+    mole2.nest();
   };
 }
